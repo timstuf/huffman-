@@ -3,6 +3,8 @@ package huffman;
 import file.HuffmanFileWriter;
 import file.OriginalFileReader;
 import file.OriginalFileWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tree.Node;
 import tree.TableBuilder;
 import tree.Tree;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Coder {
+    final static Logger logger = LoggerFactory.getLogger(Coder.class);
     private Tree tree;
     private final String path;
 
@@ -24,7 +27,7 @@ public class Coder {
 
     public void codeMessage() throws IOException {
        String message = new OriginalFileReader(path).readFile();
-
+        logger.debug("message to be coded = {}", message);
         Map<Character, Integer> table = getFrequencyTable(message);
         tree = new TreeBuilder().build(table);
         Map<Character, String> huffmanMap= new TableBuilder().buildTable(tree);
@@ -53,6 +56,7 @@ public class Coder {
         for (int i = 0; i < message.length(); i++) {
             result.append(huffmanMap.get(message.charAt(i)));
         }
+        logger.debug("encoded message = {}", result.toString());
         return result.toString();
     }
 
@@ -64,12 +68,16 @@ public class Coder {
         }
 
         messageInChars.forEach((ch)->{
-            if(table.containsKey(ch))  table.put(ch, 1+table.get(ch));
+            if(table.containsKey(ch))  {
+                table.put(ch, 1+table.get(ch));
+            }
             else{
                 table.put(ch, 1);
+
             }
         });
         table.put('E', 1);
+        table.entrySet().stream().forEach((ch)->{logger.debug("the frequency table: character {}, it's frequency {}", ch.getKey(), ch.getValue());});
         return table;
     }
 
@@ -104,14 +112,18 @@ public class Coder {
             buffer = (byte) (buffer << 1);
             buffer |= bits[i];
         }
+        logger.debug("the byte that holds bits : {}", buffer);
         return buffer;
     }
     private byte[] convertByteToBitsArray(String mes){
+        String loggerMessage = "";
         byte[] bits = new byte[7];
         for (int i = 0; i < 7; i++) {
             if(mes.charAt(i)=='0') bits[i] = 0;
             else bits[i] = 1;
+            loggerMessage+=bits[i];
         }
+        logger.debug("message converted to bits (actually bytes) array: {}", loggerMessage);
         return bits;
     }
 

@@ -1,5 +1,7 @@
 package file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tree.Tree;
 
 import java.io.File;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HuffmanFileWriter implements FileWriter {
+    final static Logger logger = LoggerFactory.getLogger(HuffmanFileWriter.class);
     public static final int BITS_SIZE = 8;
     private File writingFile;
     private Byte[] bytes;
@@ -23,6 +26,7 @@ public class HuffmanFileWriter implements FileWriter {
        byte[] normalBytes = new byte[bytes.length];
         for (int i = 0; i < bytes.length; i++) {
             normalBytes[i] = bytes[i];
+            logger.debug("byte {} written: {}",i,normalBytes[i]);
         }
         fos.write(normalBytes);
         fos.write(1);

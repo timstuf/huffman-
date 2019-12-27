@@ -1,11 +1,14 @@
 package file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tree.Tree;
 
 import java.io.*;
 
 public class HuffmanFileReader {
     public static final int BITS_SIZE = 8;
+    final static Logger logger = LoggerFactory.getLogger(HuffmanFileReader.class);
     private File readingFile;
     private String decodedMessage;
 
@@ -39,7 +42,7 @@ public class HuffmanFileReader {
         while((b= (byte) bis.read())!=-1){
             decodedMessage+=bitsToString(getByteInBits(b));
         }
-
+        logger.debug("decoded message: {}", decodedMessage);
         return decodedMessage;
     }
 }

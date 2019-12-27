@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class OriginalFileReader implements FileReader {
     public static final int BITS_SIZE = 8;
+    public static final int ASCII_1 = 48;
     private File readingFile;
     private String encodedMessage;
 
@@ -20,7 +21,7 @@ public class OriginalFileReader implements FileReader {
         BufferedInputStream bis = new BufferedInputStream(fis);
         int digit;
         while ((digit = bis.read()) != -1) {
-            encodedMessage += (char)digit;
+            encodedMessage += (char) digit;
             // encodedMessage += convertIntoBits(digit);
         }
 
@@ -32,11 +33,11 @@ public class OriginalFileReader implements FileReader {
         Map<Character, Integer> huff = new HashMap<>();
         int digit;
         while ((digit = fis.read()) != -1) {
-            char charac = (char) digit;
+            char character = (char) digit;
             fis.read();
-            int str = fis.read();
+            int frequency = fis.read();
             fis.read();
-            huff.put(charac,str);
+            huff.put(character, frequency-ASCII_1);
         }
         return huff;
     }

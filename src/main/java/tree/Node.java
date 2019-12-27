@@ -4,7 +4,7 @@ import file.OriginalFileReader;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@AllArgsConstructor
+@Data
 public class Node implements Comparable<Node> {
     private final int frequency;
     private final String symbols;
@@ -21,14 +21,6 @@ public class Node implements Comparable<Node> {
 
     boolean isLeaf() {
         return left == null && right == null;
-    }
-
-    Node getLeft() {
-        return left;
-    }
-
-    Node getRight() {
-        return right;
     }
 
     Node combineTwoNodes(Node bigger) {

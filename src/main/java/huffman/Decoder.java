@@ -3,6 +3,8 @@ package huffman;
 import file.HuffmanFileReader;
 import file.OriginalFileReader;
 import file.OriginalFileWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tree.Node;
 import tree.Tree;
 import tree.TreeBuilder;
@@ -14,6 +16,7 @@ public class Decoder {
     private Tree tree;
     private final String path;
     private String message;
+    final static Logger logger = LoggerFactory.getLogger(Decoder.class);
 
     Decoder(String path) {
         this.path = path;
@@ -27,9 +30,10 @@ public class Decoder {
         tree = new TreeBuilder().build(table);
         int i = 0;
         char character;
-        while((character = tree.getChar(message.substring(i++,message.length()),tree.getRoot()))!='E'){
+        while((character = tree.getChar(message.substring(i++),tree.getRoot()))!='E'){
             newMess+=character;
         }
+        logger.debug("result message: {}", newMess);
         new OriginalFileWriter("decoded.txt").writeIntoFile(newMess);
     }
 
