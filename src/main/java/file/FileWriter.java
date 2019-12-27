@@ -4,7 +4,8 @@ import tree.Tree;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public interface FileWriter {
-    File writeIntoFile() throws FileNotFoundException;
+    void writeIntoFile(String message) throws IOException;
 }

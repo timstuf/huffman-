@@ -5,6 +5,7 @@ import tree.Tree;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +18,16 @@ public class HuffmanFileWriter implements FileWriter {
         this.writingFile = writingFile;
     }
     @Override
-    public File writeIntoFile() throws FileNotFoundException {
+    public void writeIntoFile(String message) throws IOException {
        FileOutputStream fos = new FileOutputStream(writingFile);
-
-
-
+       byte[] normalBytes = new byte[bytes.length];
+        for (int i = 0; i < bytes.length; i++) {
+            normalBytes[i] = bytes[i];
+        }
+        fos.write(normalBytes);
+        fos.flush();
         //int writeByte = message.substring(0,8);
-        return null;
+
     }
 
 

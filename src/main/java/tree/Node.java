@@ -35,6 +35,8 @@ public class Node implements Comparable<Node> {
         return new Node(frequency + bigger.frequency, symbols + bigger.symbols, this, bigger);
     }
 
+
+
     public String encodeNode(String result) {
         if (isLeaf()) {
             result += "1";

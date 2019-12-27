@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 public class Tree {
     private Node root;
 
-    Tree(Node root) {
+    public Tree(Node root) {
         this.root = root;
     }
 
@@ -15,7 +15,10 @@ public class Tree {
         return root;
     }
 
+
+
+
     public String encodeHuffmanTree() {
-       return root.encodeNode("");
+        return root.encodeNode("");
     }
 }
