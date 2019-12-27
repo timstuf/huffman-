@@ -1,6 +1,8 @@
 package file;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OriginalFileReader implements FileReader {
     public static final int BITS_SIZE = 8;
@@ -23,6 +25,20 @@ public class OriginalFileReader implements FileReader {
         }
 
         return encodedMessage;
+    }
+
+    public Map<Character, Integer> readMap() throws IOException {
+        FileInputStream fis = new FileInputStream(readingFile);
+        Map<Character, Integer> huff = new HashMap<>();
+        int digit;
+        while ((digit = fis.read()) != -1) {
+            char charac = (char) digit;
+            fis.read();
+            int str = fis.read();
+            fis.read();
+            huff.put(charac,str);
+        }
+        return huff;
     }
 
     private String convertIntoBits(int digit) {

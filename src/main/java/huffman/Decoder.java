@@ -1,10 +1,14 @@
 package huffman;
 
 import file.HuffmanFileReader;
+import file.OriginalFileReader;
+import file.OriginalFileWriter;
 import tree.Node;
 import tree.Tree;
+import tree.TreeBuilder;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Decoder {
     private Tree tree;
@@ -17,9 +21,17 @@ public class Decoder {
 
 
     public void decodeMessage() throws IOException {
+        String newMess = "";
         message = new HuffmanFileReader(path).readFile();
-
+        Map<Character,Integer> table = getTable();
+        tree = new TreeBuilder().build(table);
+        int i = 0;
+        while(tree.getChar(message,tree.getRoot())!='E'){
+            newMess+=tree.getChar(message.substring(i++,message.length()),tree.getRoot());
+        }
+        new OriginalFileWriter("D:\\decoded.txt").writeIntoFile(newMess);
     }
+
 
     public int getCharFromString(String mes) {
         int two = 1;
@@ -47,6 +59,10 @@ public class Decoder {
             Node rightChild = decodeNode();
             return new Node(0,"",leftChild,rightChild);
         }
+    }
+
+    public Map<Character, Integer> getTable() throws IOException {
+        return new OriginalFileReader("D:\\table.txt").readMap();
     }
 
     public Tree decodeHuffmanTree() {

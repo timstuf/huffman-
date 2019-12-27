@@ -1,6 +1,7 @@
 package huffman;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Decider {
     private File file;
@@ -15,13 +16,13 @@ public class Decider {
         else return "";
     }
 
-    public void decide(){
+    public void decide() throws IOException {
         String extension = getFileExtension();
         if(extension.equals("hf")){
-            Decoder decode = new Decoder(file.getPath());
+            new Decoder(file.getPath()).decodeMessage();
         }
         else{
-            Coder encoder = new Coder(file.getPath());
+            new Coder(file.getPath()).codeMessage();
         }
     }
 }

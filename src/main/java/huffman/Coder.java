@@ -30,7 +30,7 @@ public class Coder {
         Map<Character, String> huffmanMap= new TableBuilder().buildTable(tree);
 
         String encodedMessage = shifrMessage(huffmanMap,message);
-        writeTable(huffmanMap);
+        writeTable(table);
         Byte[] encodedFileBytes = convertListToByteArray(encodeBytes(encodedMessage));
         new HuffmanFileWriter(encodedFileBytes, new File("D:\\res.hf")).writeIntoFile("");
     }
@@ -41,9 +41,9 @@ public class Coder {
         new HuffmanFileWriter(encodedFileBytes, new File("D:\\resTa.hf")).writeIntoFile("");
     }
     
-    private void writeTable( Map<Character, String> huffmanMap) throws IOException {
+    private void writeTable( Map<Character, Integer> table) throws IOException {
         StringBuilder st = new StringBuilder();
-       huffmanMap.entrySet().forEach((c)->{st.append(c.getValue());st.append(' ');st.append(c.getKey());st.append('\n');});
+       table.entrySet().forEach((c)->{st.append(c.getKey());st.append(' ');st.append(c.getValue());st.append('\n');});
        st.deleteCharAt(st.length()-1);
        new OriginalFileWriter("D:\\table.txt").writeIntoFile(st.toString());
     }
@@ -86,14 +86,14 @@ public class Coder {
         else size = message.length()/7+1;
         byte[] encodedBytes = new byte[size];
         while(message.length()>0){
-            if(message.length()<6) {
+            if(message.length()<7) {
                 int len = message.length();
                 for (int i = 6; i >=len ; i--) {
                     message.append("0");
                 }
             }
             bytes.add(convertBitArrayToByte(convertByteToBitsArray(message.substring(0,7))));
-            message.delete(7, message.length());
+            message.delete(0, 7);
         }
         return bytes;
     }

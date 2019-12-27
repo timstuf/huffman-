@@ -11,10 +11,19 @@ public class Tree {
         this.root = root;
     }
 
-    Node getRoot() {
+    public Node getRoot() {
         return root;
     }
 
+    public char getChar(String message,Node node){
+        if(!node.isLeaf())
+        {
+            if(message.charAt(0)=='0') getChar(message.substring(1,message.length()),node.getLeft());
+            else getChar(message.substring(1,message.length()),node.getRight());
+            return 'd';
+        }
+        else return node.getSymbol();
+    }
 
 
 
