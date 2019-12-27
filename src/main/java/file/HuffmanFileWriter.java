@@ -25,6 +25,7 @@ public class HuffmanFileWriter implements FileWriter {
             normalBytes[i] = bytes[i];
         }
         fos.write(normalBytes);
+        fos.write(1);
         fos.flush();
         //int writeByte = message.substring(0,8);
 

@@ -32,7 +32,7 @@ public class Coder {
         String encodedMessage = shifrMessage(huffmanMap,message);
         writeTable(table);
         Byte[] encodedFileBytes = convertListToByteArray(encodeBytes(encodedMessage));
-        new HuffmanFileWriter(encodedFileBytes, new File("D:\\res.hf")).writeIntoFile("");
+        new HuffmanFileWriter(encodedFileBytes, new File("res.hf")).writeIntoFile("");
     }
     private void writeTree() throws IOException {
         String encodedTree = tree.encodeHuffmanTree();
@@ -45,7 +45,7 @@ public class Coder {
         StringBuilder st = new StringBuilder();
        table.entrySet().forEach((c)->{st.append(c.getKey());st.append(' ');st.append(c.getValue());st.append('\n');});
        st.deleteCharAt(st.length()-1);
-       new OriginalFileWriter("D:\\table.txt").writeIntoFile(st.toString());
+       new OriginalFileWriter("table.txt").writeIntoFile(st.toString());
     }
     
     private String shifrMessage( Map<Character, String> huffmanMap, String message){

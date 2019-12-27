@@ -30,7 +30,7 @@ public class Decoder {
         while((character = tree.getChar(message.substring(i++,message.length()),tree.getRoot()))!='E'){
             newMess+=character;
         }
-        new OriginalFileWriter("D:\\decoded.txt").writeIntoFile(newMess);
+        new OriginalFileWriter("decoded.txt").writeIntoFile(newMess);
     }
 
 

@@ -8,7 +8,6 @@ import java.io.IOException;
 
 public class Application {
     public static void main(String[] args) throws IOException {
-
-        new Decider("D:\\res.hf").decide();
+       new Decider(args[0]).decide();
     }
 }
