@@ -15,9 +15,9 @@ public class TableBuilder {
         goToNode(tree.getRoot(), "");
         return huffmanMap;
     }
-    public void goToNode(Node root, String code){
+    private void goToNode(Node root, String code){
         if(root.isLeaf()){
-            huffmanMap.put(Character.valueOf(root.getSymbol()), code);
+            huffmanMap.put(root.getSymbol(), code);
             return;
         }
         if(root.getRight()!=null){

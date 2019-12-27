@@ -1,5 +1,10 @@
 package file;
 
+import tree.Tree;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public interface FileWriter {
-    void writeIntoFile();
+    File writeIntoFile() throws FileNotFoundException;
 }
