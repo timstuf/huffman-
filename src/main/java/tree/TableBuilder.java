@@ -10,7 +10,6 @@ public class TableBuilder {
     }
 
 
-    //TODO reverse hashmap
     public Map<Character, String> buildTable(Tree tree){
         goToNode(tree.getRoot(), "");
         return huffmanMap;

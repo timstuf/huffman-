@@ -20,7 +20,7 @@ public class OriginalFileReader implements FileReader {
         BufferedInputStream bis = new BufferedInputStream(fis);
         int digit;
         while ((digit = bis.read()) != -1) {
-            encodedMessage += digit;
+            encodedMessage += (char)digit;
             // encodedMessage += convertIntoBits(digit);
         }
 

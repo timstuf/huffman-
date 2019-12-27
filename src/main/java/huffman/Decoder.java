@@ -26,8 +26,9 @@ public class Decoder {
         Map<Character,Integer> table = getTable();
         tree = new TreeBuilder().build(table);
         int i = 0;
-        while(tree.getChar(message,tree.getRoot())!='E'){
-            newMess+=tree.getChar(message.substring(i++,message.length()),tree.getRoot());
+        char character;
+        while((character = tree.getChar(message.substring(i++,message.length()),tree.getRoot()))!='E'){
+            newMess+=character;
         }
         new OriginalFileWriter("D:\\decoded.txt").writeIntoFile(newMess);
     }

@@ -18,9 +18,8 @@ public class Tree {
     public char getChar(String message,Node node){
         if(!node.isLeaf())
         {
-            if(message.charAt(0)=='0') getChar(message.substring(1,message.length()),node.getLeft());
-            else getChar(message.substring(1,message.length()),node.getRight());
-            return 'd';
+            if(message.charAt(0)=='0') return getChar(message.substring(1,message.length()),node.getLeft());
+            else return getChar(message.substring(1,message.length()),node.getRight());
         }
         else return node.getSymbol();
     }
