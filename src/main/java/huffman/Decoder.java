@@ -24,17 +24,13 @@ public class Decoder {
 
 
     public void decodeMessage() throws IOException {
-        String newMess = "";
         message = new HuffmanFileReader(path).readFile();
+        message = "011111000011111000011111000110000000000";
         Map<Character,Integer> table = getTable();
         tree = new TreeBuilder().build(table);
-        int i = 0;
-        char character;
-        while((character = tree.getChar(message.substring(i++),tree.getRoot()))!='E'){
-            newMess+=character;
-        }
-        logger.debug("result message: {}", newMess);
-        new OriginalFileWriter("decoded.txt").writeIntoFile(newMess);
+        String finalMessage = tree.decodeMessageUsingTree(message);
+        logger.debug("result message: {}", finalMessage);
+        new OriginalFileWriter("decoded.txt").writeIntoFile(finalMessage);
     }
 
 

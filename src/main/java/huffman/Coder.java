@@ -12,6 +12,7 @@ import tree.TreeBuilder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,8 +21,7 @@ public class Coder {
     private Tree tree;
     private final String path;
 
-
-    public Coder(String path){
+    public Coder(String path) throws FileNotFoundException {
         this.path = path;
     }
 
@@ -56,6 +56,7 @@ public class Coder {
         for (int i = 0; i < message.length(); i++) {
             result.append(huffmanMap.get(message.charAt(i)));
         }
+        result.append(huffmanMap.get('E'));
         logger.debug("encoded message = {}", result.toString());
         return result.toString();
     }
@@ -106,7 +107,7 @@ public class Coder {
         return bytes;
     }
 
-    private byte convertBitArrayToByte(byte[] bits){
+    private byte convertBitArrayToByte(byte[] bits)  {
         byte buffer = 0x00;
         for (int i = 0; i < 7; i++) {
             buffer = (byte) (buffer << 1);

@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tree.Tree;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,18 +20,26 @@ public class HuffmanFileWriter implements FileWriter {
     @Override
     public void writeIntoFile(String message) throws IOException {
        FileOutputStream fos = new FileOutputStream(writingFile);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
        byte[] normalBytes = new byte[bytes.length];
+       int[] bytesInInt = new int[bytes.length];
         for (int i = 0; i < bytes.length; i++) {
             normalBytes[i] = bytes[i];
+            bytesInInt[i] = bytes[i];
+            bos.write(bytesInInt[i]);
             logger.debug("byte {} written: {}",i,normalBytes[i]);
         }
-        fos.write(normalBytes);
-        fos.write(1);
-        fos.flush();
+        //bos.write(normalBytes);
+        //bos.write(bytesInInt.);
+        bos.write(1);
+        bos.flush();
         //int writeByte = message.substring(0,8);
 
     }
 
+    public void writeByte(byte writing){
+
+    }
 
 
 }
