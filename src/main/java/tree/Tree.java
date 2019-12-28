@@ -9,13 +9,13 @@ import java.util.PriorityQueue;
 
 public class Tree {
     private Node root;
-    final static Logger logger = LoggerFactory.getLogger(Tree.class);
+    private final static Logger logger = LoggerFactory.getLogger(Tree.class);
 
     public Tree(Node root) {
         this.root = root;
     }
 
-    public Node getRoot() {
+    Node getRoot() {
         return root;
     }
 

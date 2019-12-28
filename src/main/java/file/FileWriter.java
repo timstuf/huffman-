@@ -7,5 +7,5 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface FileWriter {
-    void writeIntoFile(String message) throws IOException;
+    void writeIntoFile() throws IOException;
 }

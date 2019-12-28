@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class TableBuilder {
     private Map<Character, String> huffmanMap;
-    final static Logger logger = LoggerFactory.getLogger(TableBuilder.class);
+    private final static Logger logger = LoggerFactory.getLogger(TableBuilder.class);
     public TableBuilder(){huffmanMap = new HashMap<>();
     }
 

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 public class TreeBuilder {
-    final static Logger logger = LoggerFactory.getLogger(TreeBuilder.class);
+    private final static Logger logger = LoggerFactory.getLogger(TreeBuilder.class);
     private final PriorityQueue<Node> nodeQueue = new PriorityQueue<>();
     public TreeBuilder(){}
     private void putIntoQueue(Node node)

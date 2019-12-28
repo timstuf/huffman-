@@ -16,12 +16,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class Coder {
-    final static Logger logger = LoggerFactory.getLogger(Coder.class);
+class Coder {
+    private final static Logger logger = LoggerFactory.getLogger(Coder.class);
     private Tree tree;
     private final String path;
 
-    Coder(String path) throws FileNotFoundException {
+    Coder(String path)  {
         this.path = path;
     }
 
@@ -33,19 +33,12 @@ public class Coder {
         Map<Character, String> huffmanMap = new TableBuilder().buildTable(tree);
 
         String encodedMessage = shifrMessage(huffmanMap, message);
-        writeTable(table);
-        Integer[] encodedFileBytes = convertListToByteArray(encodeBytes(encodedMessage));
-        new HuffmanFileWriter(encodedFileBytes, new File("res.hf")).writeIntoFile("");
-    }
-
-    private void writeTree() throws IOException {
         String encodedTree = tree.encodeHuffmanTree();
-        List<Integer> b = encodeBytes(encodedTree);
-        Integer[] encodedFileBytes = convertListToByteArray(b);
-        new HuffmanFileWriter(encodedFileBytes, new File("resTa.hf")).writeIntoFile("");
+        logger.debug("encoded message = {}", encodedTree+encodedMessage);
+        Integer[] encodedFileBytes = convertListToByteArray(encodeBytes(encodedTree+encodedMessage));
+        new HuffmanFileWriter(encodedFileBytes, new File("res.hf")).writeIntoFile();
     }
-
-    private void writeTable(Map<Character, Integer> table) throws IOException {
+    /*private void writeTable(Map<Character, Integer> table) throws IOException {
         StringBuilder st = new StringBuilder();
         table.forEach((key, value) -> {
             st.append(key);
@@ -55,7 +48,7 @@ public class Coder {
         });
         st.deleteCharAt(st.length() - 1);
         new OriginalFileWriter("table.txt").writeIntoFile(st.toString());
-    }
+    }*/
 
     private String shifrMessage(Map<Character, String> huffmanMap, String message) {
         StringBuilder result = new StringBuilder();
@@ -63,7 +56,6 @@ public class Coder {
             result.append(huffmanMap.get(message.charAt(i)));
         }
         result.append(huffmanMap.get(Constants.EOF));
-        logger.debug("encoded message = {}", result.toString());
         return result.toString();
     }
 

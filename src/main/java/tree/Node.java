@@ -1,6 +1,7 @@
 package tree;
 
 import file.OriginalFileReader;
+import huffman.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,31 +15,25 @@ public class Node implements Comparable<Node> {
     Character getSymbol() {
         return symbols.charAt(0);
     }
-
     public int compareTo(Node node) {
         return frequency - node.frequency;
     }
-
     boolean isLeaf() {
         return left == null && right == null;
     }
-
     Node combineTwoNodes(Node bigger) {
         return new Node(frequency + bigger.frequency, symbols + bigger.symbols, this, bigger);
     }
-
-
-
-    public String encodeNode(String result) {
+    String encodeNode(String result) {
         if (isLeaf()) {
             result += "1";
             String symbol = Integer.toBinaryString(getSymbol());
-            result += OriginalFileReader.addZerosAtTheBeginning(8 - symbol.length());
+            result += OriginalFileReader.addZerosAtTheBeginning(Constants.BITS_IN_BYTE - symbol.length());
             result += symbol;
         } else {
             result += "0";
-            result += left.encodeNode(result);
-            result += right.encodeNode(result);
+            result = left.encodeNode(result);
+            result = right.encodeNode(result);
         }
         return result;
     }

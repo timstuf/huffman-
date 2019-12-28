@@ -12,62 +12,49 @@ import tree.TreeBuilder;
 import java.io.IOException;
 import java.util.Map;
 
-public class Decoder {
-    private Tree tree;
+class Decoder {
     private final String path;
     private String message;
-    final static Logger logger = LoggerFactory.getLogger(Decoder.class);
+    private final static Logger logger = LoggerFactory.getLogger(Decoder.class);
 
     Decoder(String path) {
         this.path = path;
     }
 
 
-    public void decodeMessage() throws IOException {
+    void decodeMessage() throws IOException {
         message = new HuffmanFileReader(path).readFile();
-        //message = "011111000011111000011111000110000000000"
-        //          001111101111000110000010001100000000100000;
-        Map<Character,Integer> table = getTable();
-        tree = new TreeBuilder().build(table);
+        Tree tree = decodeHuffmanTree();
         String finalMessage = tree.decodeMessageUsingTree(message);
         logger.debug("result message: {}", finalMessage);
-        new OriginalFileWriter("decoded.txt").writeIntoFile(finalMessage);
+        new OriginalFileWriter("decoded.txt", finalMessage).writeIntoFile();
     }
-
-
-    public int getCharFromString(String mes) {
+    private int getCharFromString(String mes) {
         int two = 1;
         int result = 0;
-        for (int i = 6; i >= 0; i--) {
-            int c;
-            if (mes.charAt(i) == '0') c = 0;
-            else c = 1;
-            result += c * two;
+        for (int i = Constants.BITS_IN_BYTE-1; i >= 0; i--) {
+            int digit;
+            if (mes.charAt(i) == '0') digit = 0;
+            else digit = 1;
+            result += digit * two;
             two *= 2;
         }
         return result;
     }
-
-    public Node decodeNode() {
+    private Node decodeNode() {
         char symb = message.charAt(0);
-        message.substring(1, message.length());
-        if (symb == '0') {
-            String mes = message.substring(0, 7);
-            int symbol = getCharFromString(mes);
-            message = message.substring(8, message.length());
-            return new Node(1, String.valueOf(symbol), null, null);
+       message = message.substring(1);
+        if (symb == '1') {
+            int symbol = getCharFromString(message.substring(0, Constants.BITS_IN_BYTE));
+            message = message.substring(Constants.BITS_IN_BYTE);
+            return new Node(1, Character.toString((char)symbol), null, null);
         } else {
             Node leftChild = decodeNode();
             Node rightChild = decodeNode();
             return new Node(0,"",leftChild,rightChild);
         }
     }
-
-    public Map<Character, Integer> getTable() throws IOException {
-        return new OriginalFileReader("table.txt").readMap();
-    }
-
-    public Tree decodeHuffmanTree() {
+    private Tree decodeHuffmanTree() {
         return new Tree(decodeNode());
     }
 }

@@ -8,13 +8,10 @@ import tree.Tree;
 import java.io.*;
 
 public class HuffmanFileReader {
-    public static final int BITS_SIZE = 8;
-    final static Logger logger = LoggerFactory.getLogger(HuffmanFileReader.class);
+    private final static Logger logger = LoggerFactory.getLogger(HuffmanFileReader.class);
     private File readingFile;
-    private String decodedMessage;
 
     public HuffmanFileReader(String path) {
-        decodedMessage = "";
         readingFile = new File(path);
     }
 
@@ -40,10 +37,11 @@ public class HuffmanFileReader {
         FileInputStream fis = new FileInputStream(readingFile);
         BufferedInputStream bis = new BufferedInputStream(fis);
         int b;
+        StringBuilder message = new StringBuilder();
         while((b= bis.read())!=-1){
-            decodedMessage+=bitsToString(getByteInBits(b));
+            message.append(bitsToString(getByteInBits(b)));
         }
-        logger.debug("decoded message: {}", decodedMessage);
-        return decodedMessage;
+        logger.debug("decoded message: {}", message);
+        return message.toString();
     }
 }

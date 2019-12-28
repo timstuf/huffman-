@@ -6,10 +6,6 @@ import java.io.IOException;
 
 public class Application {
     public static void main(String[] args) throws IOException {
-     //  String s = args[0];
-     String s = "toCode.txt";
-        new Decider(s).decide();
-        s = "res.hf";
-        new Decider(s).decide();
+        new Decider(args[0]).decide();
     }
 }
