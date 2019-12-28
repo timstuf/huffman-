@@ -64,7 +64,7 @@ public class Decoder {
     }
 
     public Map<Character, Integer> getTable() throws IOException {
-        return new OriginalFileReader("D:\\table.txt").readMap();
+        return new OriginalFileReader("table.txt").readMap();
     }
 
     public Tree decodeHuffmanTree() {

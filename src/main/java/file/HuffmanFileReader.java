@@ -18,10 +18,10 @@ public class HuffmanFileReader {
         readingFile = new File(path);
     }
 
-    private byte[] getByteInBits(byte nextByte){
-       byte[] bits = new byte[Constants.BITS_IN_BYTE];
+    private byte[] getByteInBits(int nextByte){
+         byte[] bits = new byte[Constants.BITS_IN_BYTE];
         for(int i = 0; i<Constants.BITS_IN_BYTE; i++){
-            byte b = (byte) ((nextByte >> (Constants.BITS_IN_BYTE-i-1)));
+            int b = ((nextByte >> (Constants.BITS_IN_BYTE-i-1)));
             if(b%2==0) bits[i] = 0;
             else bits[i] = 1;
         }
@@ -39,8 +39,8 @@ public class HuffmanFileReader {
     public String readFile() throws IOException {
         FileInputStream fis = new FileInputStream(readingFile);
         BufferedInputStream bis = new BufferedInputStream(fis);
-        byte b;
-        while((b= (byte) bis.read())!=-1){
+        int b;
+        while((b= bis.read())!=-1){
             decodedMessage+=bitsToString(getByteInBits(b));
         }
         logger.debug("decoded message: {}", decodedMessage);

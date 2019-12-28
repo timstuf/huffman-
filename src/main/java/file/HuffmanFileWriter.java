@@ -13,8 +13,8 @@ public class HuffmanFileWriter implements FileWriter {
     final static Logger logger = LoggerFactory.getLogger(HuffmanFileWriter.class);
     public static final int BITS_SIZE = 8;
     private File writingFile;
-    private Byte[] bytes;
-    public HuffmanFileWriter(Byte[] bytes, File writingFile){
+    private Integer[] bytes;
+    public HuffmanFileWriter(Integer[] bytes, File writingFile){
         this.bytes = bytes;
         this.writingFile = writingFile;
     }
@@ -22,31 +22,16 @@ public class HuffmanFileWriter implements FileWriter {
     public void writeIntoFile(String message) throws IOException {
        FileOutputStream fos = new FileOutputStream(writingFile);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
-       byte[] normalBytes = new byte[bytes.length];
-       int[] bytesInInt = new int[bytes.length];
+       int[] normalBytes = new int[bytes.length];
+       //int[] bytesInInt = {119,63,65,11,135,251,80};
         for (int i = 0; i < bytes.length; i++) {
             normalBytes[i] = bytes[i];
-            bytesInInt[i] = bytes[i];
-            bos.write(bytesInInt[i]);
+            bos.write(normalBytes[i]);
+            //bos.write(normalBytes[i] );
             logger.debug("byte {} written: {}",i,normalBytes[i]);
         }
 
-        //bos.write(normalBytes);
-        //bos.write(bytesInInt.);
-        bos.write(1);
         bos.flush();
-        //int writeByte = message.substring(0,8);
-
-    }
-
-    public void writeStringUsingBitset(String message) throws IOException {
-        FileOutputStream fos = new FileOutputStream(writingFile);
-        BitSet huffmanBitset = new BitSet(message.length());
-        for (int i = 0; i < message.length(); i++) {
-            huffmanBitset.set(i);
-        }
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(huffmanBitset);
     }
     public void writeByte(byte writing){
 

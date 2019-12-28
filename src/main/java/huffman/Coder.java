@@ -34,15 +34,15 @@ public class Coder {
 
         String encodedMessage = shifrMessage(huffmanMap, message);
         writeTable(table);
-        Byte[] encodedFileBytes = convertListToByteArray(encodeBytes(encodedMessage));
+        Integer[] encodedFileBytes = convertListToByteArray(encodeBytes(encodedMessage));
         new HuffmanFileWriter(encodedFileBytes, new File("res.hf")).writeIntoFile("");
     }
 
     private void writeTree() throws IOException {
         String encodedTree = tree.encodeHuffmanTree();
-        List<Byte> b = encodeBytes(encodedTree);
-        Byte[] encodedFileBytes = convertListToByteArray(b);
-        new HuffmanFileWriter(encodedFileBytes, new File("D:\\resTa.hf")).writeIntoFile("");
+        List<Integer> b = encodeBytes(encodedTree);
+        Integer[] encodedFileBytes = convertListToByteArray(b);
+        new HuffmanFileWriter(encodedFileBytes, new File("resTa.hf")).writeIntoFile("");
     }
 
     private void writeTable(Map<Character, Integer> table) throws IOException {
@@ -86,17 +86,15 @@ public class Coder {
         return table;
     }
 
-    private Byte[] convertListToByteArray(List<Byte> bytes) {
-        Byte[] actualBytes = new Byte[bytes.size()];
+    private Integer[] convertListToByteArray(List<Integer> bytes) {
+        Integer[] actualBytes = new Integer[bytes.size()];
         return bytes.toArray(actualBytes);
     }
 
-    private List<Byte> encodeBytes(String encodedMessage) {
-        List<Byte> bytes = new ArrayList<>();
+    private List<Integer> encodeBytes(String encodedMessage) {
+        List<Integer> bytes = new ArrayList<>();
         StringBuilder message = new StringBuilder(encodedMessage);
-        int size;
-        if (message.length() % Constants.BITS_IN_BYTE == 0) size = message.length() / Constants.BITS_IN_BYTE;
-        else size = message.length() / Constants.BITS_IN_BYTE + 1;
+
         while (message.length() > 0) {
             if (message.length() < Constants.BITS_IN_BYTE) {
                 int len = message.length();
@@ -110,10 +108,10 @@ public class Coder {
         return bytes;
     }
 
-    private byte convertBitArrayToByte(byte[] bits) {
-        byte buffer = 0x00;
+    private int convertBitArrayToByte(byte[] bits) {
+        int buffer = 0x00;
         for (int i = 0; i < Constants.BITS_IN_BYTE; i++) {
-            buffer = (byte) (buffer << 1);
+            buffer =  buffer << 1;
             buffer |= bits[i];
         }
         logger.debug("the byte that holds bits : {}", buffer);
