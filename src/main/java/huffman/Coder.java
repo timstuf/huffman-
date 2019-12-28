@@ -21,110 +21,114 @@ public class Coder {
     private Tree tree;
     private final String path;
 
-    public Coder(String path) throws FileNotFoundException {
+    Coder(String path) throws FileNotFoundException {
         this.path = path;
     }
 
-    public void codeMessage() throws IOException {
-       String message = new OriginalFileReader(path).readFile();
+    void codeMessage() throws IOException {
+        String message = new OriginalFileReader(path).readFile();
         logger.debug("message to be coded = {}", message);
         Map<Character, Integer> table = getFrequencyTable(message);
         tree = new TreeBuilder().build(table);
-        Map<Character, String> huffmanMap= new TableBuilder().buildTable(tree);
+        Map<Character, String> huffmanMap = new TableBuilder().buildTable(tree);
 
-        String encodedMessage = shifrMessage(huffmanMap,message);
+        String encodedMessage = shifrMessage(huffmanMap, message);
         writeTable(table);
         Byte[] encodedFileBytes = convertListToByteArray(encodeBytes(encodedMessage));
         new HuffmanFileWriter(encodedFileBytes, new File("res.hf")).writeIntoFile("");
     }
+
     private void writeTree() throws IOException {
         String encodedTree = tree.encodeHuffmanTree();
         List<Byte> b = encodeBytes(encodedTree);
         Byte[] encodedFileBytes = convertListToByteArray(b);
         new HuffmanFileWriter(encodedFileBytes, new File("D:\\resTa.hf")).writeIntoFile("");
     }
-    
-    private void writeTable( Map<Character, Integer> table) throws IOException {
+
+    private void writeTable(Map<Character, Integer> table) throws IOException {
         StringBuilder st = new StringBuilder();
-       table.entrySet().forEach((c)->{st.append(c.getKey());st.append(' ');st.append(c.getValue());st.append('\n');});
-       st.deleteCharAt(st.length()-1);
-       new OriginalFileWriter("table.txt").writeIntoFile(st.toString());
+        table.forEach((key, value) -> {
+            st.append(key);
+            st.append(' ');
+            st.append(value);
+            st.append('\n');
+        });
+        st.deleteCharAt(st.length() - 1);
+        new OriginalFileWriter("table.txt").writeIntoFile(st.toString());
     }
-    
-    private String shifrMessage( Map<Character, String> huffmanMap, String message){
+
+    private String shifrMessage(Map<Character, String> huffmanMap, String message) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < message.length(); i++) {
             result.append(huffmanMap.get(message.charAt(i)));
         }
-        result.append(huffmanMap.get('E'));
+        result.append(huffmanMap.get(Constants.EOF));
         logger.debug("encoded message = {}", result.toString());
         return result.toString();
     }
 
-    private Map<Character, Integer> getFrequencyTable(String message){
+    private Map<Character, Integer> getFrequencyTable(String message) {
         Map<Character, Integer> table = new HashMap<>();
         List<Character> messageInChars = new ArrayList<>();
-        for (char ch:message.toCharArray()) {
+        for (char ch : message.toCharArray()) {
             messageInChars.add(ch);
         }
 
-        messageInChars.forEach((ch)->{
-            if(table.containsKey(ch))  {
-                table.put(ch, 1+table.get(ch));
-            }
-            else{
+        messageInChars.forEach((ch) -> {
+            if (table.containsKey(ch)) {
+                table.put(ch, 1 + table.get(ch));
+            } else {
                 table.put(ch, 1);
-
             }
         });
-        table.put('E', 1);
-        table.entrySet().stream().forEach((ch)->{logger.debug("the frequency table: character {}, it's frequency {}", ch.getKey(), ch.getValue());});
+        table.put(Constants.EOF, 1);
+        table.forEach((key, value) -> logger.debug("the frequency table: character {}, it's frequency {}", key, value));
         return table;
     }
 
-    private Byte[] convertListToByteArray(List<Byte> bytes){
+    private Byte[] convertListToByteArray(List<Byte> bytes) {
         Byte[] actualBytes = new Byte[bytes.size()];
         return bytes.toArray(actualBytes);
     }
 
-    private List<Byte> encodeBytes(String encodedMessage){
+    private List<Byte> encodeBytes(String encodedMessage) {
         List<Byte> bytes = new ArrayList<>();
         StringBuilder message = new StringBuilder(encodedMessage);
         int size;
-        if(message.length()%7==0) size = message.length()/7;
-        else size = message.length()/7+1;
-        byte[] encodedBytes = new byte[size];
-        while(message.length()>0){
-            if(message.length()<7) {
+        if (message.length() % Constants.BITS_IN_BYTE == 0) size = message.length() / Constants.BITS_IN_BYTE;
+        else size = message.length() / Constants.BITS_IN_BYTE + 1;
+        while (message.length() > 0) {
+            if (message.length() < Constants.BITS_IN_BYTE) {
                 int len = message.length();
-                for (int i = 6; i >=len ; i--) {
+                for (int i = Constants.BITS_IN_BYTE - 1; i >= len; i--) {
                     message.append("0");
                 }
             }
-            bytes.add(convertBitArrayToByte(convertByteToBitsArray(message.substring(0,7))));
-            message.delete(0, 7);
+            bytes.add(convertBitArrayToByte(convertByteToBitsArray(message.substring(0, Constants.BITS_IN_BYTE))));
+            message.delete(0, Constants.BITS_IN_BYTE);
         }
         return bytes;
     }
 
-    private byte convertBitArrayToByte(byte[] bits)  {
+    private byte convertBitArrayToByte(byte[] bits) {
         byte buffer = 0x00;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < Constants.BITS_IN_BYTE; i++) {
             buffer = (byte) (buffer << 1);
             buffer |= bits[i];
         }
         logger.debug("the byte that holds bits : {}", buffer);
         return buffer;
     }
-    private byte[] convertByteToBitsArray(String mes){
-        String loggerMessage = "";
-        byte[] bits = new byte[7];
-        for (int i = 0; i < 7; i++) {
-            if(mes.charAt(i)=='0') bits[i] = 0;
+
+    private byte[] convertByteToBitsArray(String mes) {
+        StringBuilder loggerMessage = new StringBuilder();
+        byte[] bits = new byte[Constants.BITS_IN_BYTE];
+        for (int i = 0; i < Constants.BITS_IN_BYTE; i++) {
+            if (mes.charAt(i) == '0') bits[i] = 0;
             else bits[i] = 1;
-            loggerMessage+=bits[i];
+            loggerMessage.append(bits[i]);
         }
-        logger.debug("message converted to bits (actually bytes) array: {}", loggerMessage);
+        logger.debug("message converted to bits (actually bytes) array: {}", loggerMessage.toString());
         return bits;
     }
 

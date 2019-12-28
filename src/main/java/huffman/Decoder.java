@@ -25,7 +25,8 @@ public class Decoder {
 
     public void decodeMessage() throws IOException {
         message = new HuffmanFileReader(path).readFile();
-        message = "011111000011111000011111000110000000000";
+        //message = "011111000011111000011111000110000000000"
+        //          001111101111000110000010001100000000100000;
         Map<Character,Integer> table = getTable();
         tree = new TreeBuilder().build(table);
         String finalMessage = tree.decodeMessageUsingTree(message);

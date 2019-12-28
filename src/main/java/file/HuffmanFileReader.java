@@ -1,5 +1,6 @@
 package file;
 
+import huffman.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tree.Tree;
@@ -18,21 +19,21 @@ public class HuffmanFileReader {
     }
 
     private byte[] getByteInBits(byte nextByte){
-       byte[] bits = new byte[7];
-        for(int i = 0; i<7; i++){
-            byte b = (byte) ((nextByte >> (i - 1)));
+       byte[] bits = new byte[Constants.BITS_IN_BYTE];
+        for(int i = 0; i<Constants.BITS_IN_BYTE; i++){
+            byte b = (byte) ((nextByte >> (Constants.BITS_IN_BYTE-i-1)));
             if(b%2==0) bits[i] = 0;
             else bits[i] = 1;
         }
         return bits;
     }
     private String bitsToString(byte[] nextByte){
-        String message = "";
-        for (int i = 0; i < 7; i++) {
-            if(nextByte[i]==0) message+="0";
-            else message+="1";
+        StringBuilder message = new StringBuilder();
+        for (int i = 0; i < Constants.BITS_IN_BYTE; i++) {
+            if(nextByte[i]==0) message.append("0");
+            else message.append("1");
         }
-        return message;
+        return message.toString();
     }
 
     public String readFile() throws IOException {

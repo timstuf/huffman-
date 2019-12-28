@@ -6,6 +6,7 @@ import tree.Tree;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 
 public class HuffmanFileWriter implements FileWriter {
@@ -29,6 +30,7 @@ public class HuffmanFileWriter implements FileWriter {
             bos.write(bytesInInt[i]);
             logger.debug("byte {} written: {}",i,normalBytes[i]);
         }
+
         //bos.write(normalBytes);
         //bos.write(bytesInInt.);
         bos.write(1);
@@ -37,6 +39,15 @@ public class HuffmanFileWriter implements FileWriter {
 
     }
 
+    public void writeStringUsingBitset(String message) throws IOException {
+        FileOutputStream fos = new FileOutputStream(writingFile);
+        BitSet huffmanBitset = new BitSet(message.length());
+        for (int i = 0; i < message.length(); i++) {
+            huffmanBitset.set(i);
+        }
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(huffmanBitset);
+    }
     public void writeByte(byte writing){
 
     }

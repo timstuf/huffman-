@@ -1,6 +1,7 @@
 package tree;
 
 import file.OriginalFileReader;
+import huffman.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,17 +20,15 @@ public class Tree {
     }
 
     public String decodeMessageUsingTree(String message) {
-        String finalMessage = "";
+        StringBuilder finalMessage = new StringBuilder();
         Node node = root;
         char anotherCharacter = 0;
-        while (anotherCharacter != 'E') {
+        while (anotherCharacter != Constants.EOF) {
             while (!node.isLeaf()) {
                 if (message.charAt(0) == '0') {
-                    // logger.debug("if 0 then go left return {}",getChar(message.substring(1),node.getLeft()));
                     node = node.getLeft();
                     message = message.substring(1);
                 } else {
-                    // logger.debug("if 1 then go right return {}",getChar(message.substring(1),node.getRight()));
                     node = node.getRight();
                     message = message.substring(1);
                 }
@@ -37,7 +36,7 @@ public class Tree {
             logger.debug("else return symbol {}", node.getSymbol());
             anotherCharacter = node.getSymbol();
             node = root;
-            finalMessage+=anotherCharacter;
+            finalMessage.append(anotherCharacter);
         }
        return finalMessage.substring(0, finalMessage.length()-1);
     }
